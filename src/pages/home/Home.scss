@@ -28,30 +28,31 @@
         border-radius: 4px;
         font-size: 16px;
         cursor: pointer;
-        
+        background-color: whitesmoke;
         
         
       }
 
 
-      
+     
      .correct{
       
-        &:focus {
+      &:disabled{
+        cursor: not-allowed;
+        background-color:green;
+      
+      }
             
-             background-color: #023d12;
-             
-            
-            
-          }
+          
      }
      .incorrect{
          
-        &:focus {
-           
-             background-color:#4a0315;
-            
-            
+      
+    
+      
+      &:disabled{
+        cursor: not-allowed; 
+        background-color:#4a0315;
           
           }
      }

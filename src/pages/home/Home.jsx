@@ -1,4 +1,4 @@
-import { useContext, React, useState ,} from "react";
+import React, { useContext, useState } from "react";
 import "./Home.scss";
 import QuesContext from "../../components/context/Context";
 
@@ -6,38 +6,65 @@ const Home = () => {
   const { QuesArray } = useContext(QuesContext);
   const [index, setIndex] = useState(0);
   const [score, setScore] = useState(0);
-  const [isAnswered, setIsAnswered]= useState(false)
   const [disabled, setDisabled] = useState(false);
-
-
+  const [selectedOption, setSelectedOption] = useState(null);
 
   const manageCrct = () => {
-    //setScore(score + 1);
-
-    
-     setDisabled(true)
-    //alert("Correct answer proceed to next question");
-     //setIndex(index+1)
-    //setIsAnswered(!isAnswered)
-   
-  };
-  const manageWrong = () => {
-    setScore(score);
-    //setIndex(index+1)
-     //setCheckbt(false);
     setDisabled(true);
-    // alert("Wrong answer proceed to next question")
-   //setIsAnswered(!isAnswered)
-   
+    setScore(score + 1);
+  };
+
+  const manageWrong = (opt) => {
+    setDisabled(true);
+    setSelectedOption(opt);
+  };
+
+  const handleOptionClick = (opt) => {
+    setSelectedOption(opt);
+    const isCorrect = opt == QuesArray[index].answer;
+    console.log(isCorrect);
+    if (isCorrect) {
+      manageCrct(opt);
+    } else {
+      manageWrong(opt);
+    }
   };
 
   const handleNxt = () => {
     setIndex(index + 1);
     setDisabled(false);
-   
+    setSelectedOption(null);
   };
 
+  const renderButtons = (options) =>
+    options.map((opt) => {
+      const isCorrect = opt === QuesArray[index].answer;
+      const isSelected = selectedOption === opt;
 
+      let buttonClassName = "";
+      if (isSelected) {
+        buttonClassName = isCorrect ? "correct" : "incorrect";
+        console.log(isCorrect);
+      }
+      console.log(
+        buttonClassName,
+        isCorrect,
+        isSelected,
+        selectedOption,
+        opt,
+        "check..."
+      );
+      return (
+        <button
+          key={opt}
+          disabled={disabled}
+          onClick={() => handleOptionClick(opt)}
+          className={`answer ${buttonClassName}`}
+        >
+          {opt}
+        </button>
+      );
+    });
 
   return (
     <div className="main">
@@ -46,65 +73,16 @@ const Home = () => {
           <div className="container">
             <h1>Who Wants to Be a Millionaire?</h1>
 
-            <span>
-              {QuesArray.map((item) => (
-                <>
-                  <h3>Que. {item.question}</h3>
-                  <div className="score">Score: {score}</div>
+            {QuesArray.slice(index, index + 1).map((item) => (
+              <React.Fragment>
+                <h3>Que. {item.question}</h3>
+                <div className="score">Score: {score}</div>
 
-                  {item.options.map((opt) => {
-                    return (
-                      <>
-                      {opt == item.answer ?
-                        (
-                          <>
-                          <button
-                          // disabled={disabled}
-                          onClick={()=>manageCrct()}
-                          className="answer correct"
-                          >
-                          {opt}
-                          </button>
-                          </>
-                        ):(
-                          <>
-                          <button
-                        
-                          onClick={()=>manageWrong()}
-                          disabled={disabled}
-                          className="answer incorrect"
-                          >{opt}</button>
-                          
-                          </>
-                        )
-                        }
-                        </>
-                      // <button
-                      //   disabled={disabled}
-                      //   onClick={
-                      //     opt == item.answer
-                      //       ? () => {
-                      //           manageCrct();
-                      //         }
-                      //       : () => {
-                      //           manageWrong();
-                      //         }
-                      //   }
-                      //   className={isAnswered?"answer correct":"answer incorrect"}
-                        
-                          
-                        
-                      // >
-                      //   {opt}
-                      // </button>
-                    );
-                  })}
-                </>
-              )).slice(index, index + 1)}
-            </span>
+                {renderButtons(item.options)}
+              </React.Fragment>
+            ))}
 
-            {/* <button className="nxt" onClick={()=>setIndex(index-1)}>Prev Question</button>     */}
-            <button className="nxt" onClick={() => handleNxt()}>
+            <button className="nxt" onClick={handleNxt}>
               Next Question
             </button>
           </div>
@@ -112,8 +90,7 @@ const Home = () => {
       ) : (
         <div className="end-pg">
           <h1>
-            {" "}
-            YourScore: {score}/{QuesArray.length}
+            Your Score: {score}/{QuesArray.length}
           </h1>
           <h3>Keep calm and try again</h3>
         </div>

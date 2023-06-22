@@ -39,7 +39,8 @@
       
       &:disabled{
         cursor: not-allowed;
-        background-color:green;
+        background-color:rgb(5, 56, 5);
+        color: white;
       
       }
             
@@ -53,6 +54,7 @@
       &:disabled{
         cursor: not-allowed; 
         background-color:#4a0315;
+        color: white;
           
           }
      }

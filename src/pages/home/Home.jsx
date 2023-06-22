@@ -3,63 +3,41 @@ import "./Home.scss";
 import QuesContext from "../../components/context/Context";
 
 const Home = () => {
-  const { QuesArray } = useContext(QuesContext);
-  const [index, setIndex] = useState(0);
-  const [score, setScore] = useState(0);
-  const [disabled, setDisabled] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
+  const { QuesArray,index, setIndex,score, setScore,disabled, setDisabled,selectedOption, setSelectedOption } = useContext(QuesContext);
 
-  const manageCrct = () => {
-    setDisabled(true);
-    setScore(score + 1);
-  };
-
-  const manageWrong = (opt) => {
-    setDisabled(true);
+  const handleOptionClick = (opt,item) => {
     setSelectedOption(opt);
-  };
-
-  const handleOptionClick = (opt) => {
-    setSelectedOption(opt);
-    const isCorrect = opt == QuesArray[index].answer;
-    console.log(isCorrect);
+    const isCorrect = opt === item.answer;
+    setDisabled(true);
+  
     if (isCorrect) {
-      manageCrct(opt);
-    } else {
-      manageWrong(opt);
+      setScore((prevScore) => prevScore + 1);
     }
   };
+  
 
   const handleNxt = () => {
-    setIndex(index + 1);
+    setIndex((prevIndex) => prevIndex + 1);
     setDisabled(false);
     setSelectedOption(null);
   };
 
-  const renderButtons = (options) =>
-    options.map((opt) => {
-      const isCorrect = opt === QuesArray[index].answer;
+  const renderButtons = (item) =>
+   item.options.map((opt) => {
+      const isCorrect = opt === item.answer;
       const isSelected = selectedOption === opt;
 
-      let buttonClassName = "";
-      if (isSelected) {
-        buttonClassName = isCorrect ? "correct" : "incorrect";
-        console.log(isCorrect);
-      }
-      console.log(
-        buttonClassName,
-        isCorrect,
-        isSelected,
-        selectedOption,
-        opt,
-        "check..."
-      );
       return (
         <button
           key={opt}
           disabled={disabled}
-          onClick={() => handleOptionClick(opt)}
-          className={`answer ${buttonClassName}`}
+          onClick={() => handleOptionClick(opt,item)}
+          
+          className={isSelected
+          ? (isCorrect
+            ? "answer correct"
+            : "answer incorrect")
+          : ("answer")}
         >
           {opt}
         </button>
@@ -74,12 +52,12 @@ const Home = () => {
             <h1>Who Wants to Be a Millionaire?</h1>
 
             {QuesArray.slice(index, index + 1).map((item) => (
-              <React.Fragment>
+              <>
+                
                 <h3>Que. {item.question}</h3>
                 <div className="score">Score: {score}</div>
-
-                {renderButtons(item.options)}
-              </React.Fragment>
+                {renderButtons(item)}
+              </>
             ))}
 
             <button className="nxt" onClick={handleNxt}>

@@ -1,16 +1,20 @@
-import React, { useContext, useState } from "react";
-import "./Home.scss";
-import QuesContext from "../../components/context/Context";
-import { useHandleOptionClick } from "../../components/CustomHooks/useHandleOptionClick";
-import { useHandleNxt } from "../../components/CustomHooks/useHanleNxt";
+import React, { useContext, useState } from 'react';
+import './Home.scss';
+import QuesContext from '../../components/context/Context';
+import useQuizState from '../../components/CustomHooks/useQuizState';
 
 const Home = () => {
-  const { QuesArray, state } = useContext(QuesContext);
-  const { handleOptionClick } = useHandleOptionClick();
-  const { handleNxt } = useHandleNxt();
+  const { QuesArray } = useContext(QuesContext);
+  const [state, handleOptionClick, handleNxt] = useQuizState({
+    index: 0,
+    score: 0,
+    disabled: false,
+    selectedOption: null
+  });
 
   const renderButtons = (item) =>
-    item.options.map((opt, isCorrect) => {
+    item.options.map((opt) => {
+      const isCorrect = opt === item.answer;
       const isSelected = state.selectedOption === opt;
 
       return (
@@ -18,13 +22,9 @@ const Home = () => {
           key={opt}
           disabled={state.disabled}
           onClick={() => handleOptionClick(opt, item)}
-          className={
-            isSelected
-              ? isCorrect
-                ? "answer correct"
-                : "answer incorrect"
-              : "answer"
-          }
+          className={isSelected
+            ? isCorrect ? 'answer correct' : 'answer incorrect'
+            : 'answer'}
         >
           {opt}
         </button>

@@ -1,7 +1,7 @@
  export const data =[
     {
        
-        question:"First priminister of india",
+        question:"First prime minister of india",
         options:["Indira Gandhi","Morarji Desai","Jawaharlal Nehru"],
         answer:"Jawaharlal Nehru"
     },
@@ -23,7 +23,37 @@
         options:[92,94,98],
         answer:98
 
-    }
+    },
+    {
+        question:"How many legs does a spider have?",
+        options:[8,6,9],
+        answer:8
+    },
+    {
+        question:"How many letters are there in the English alphabet?",
+        options:[28,26,29],
+        answer:26
+    },
+    {
+        question: "Rainbow consist of how many colours?",
+        options:[5,9,7],
+        answer:7
+    },
+    {
+        question:"How many minutes are there in an hour?",
+        options:[68,60,29],
+        answer:60
+    },
+    {
+        question:"How many days are there in a year",
+        options:[328,365,368],
+        answer:365
+    },
+    {
+        question:"How many vowels are there in the English alphabet?",
+        options:[5,7,10],
+        answer:5
+    },
 ]
 
 

@@ -23,7 +23,7 @@ const useQuizState = (initialState) => {
     }));
   };
 
-  return [state, handleOptionClick, handleNxt];
+  return [state, handleOptionClick, handleNxt,setState];
 };
 
 export default useQuizState;
